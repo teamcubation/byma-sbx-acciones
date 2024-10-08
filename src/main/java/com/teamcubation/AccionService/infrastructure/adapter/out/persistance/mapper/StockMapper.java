@@ -1,4 +1,4 @@
-package com.teamcubation.AccionService.infrastructure.adapter.out.persistance.repository;
+package com.teamcubation.AccionService.infrastructure.adapter.out.persistance.mapper;
 
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
@@ -9,6 +9,7 @@ public class StockMapper {
                 .id(stockEntity.getId())
                 .name(stockEntity.getName())
                 .price(stockEntity.getPrice())
+                .dividend(stockEntity.getDividend())
                 .build();
     }
 
@@ -17,6 +18,7 @@ public class StockMapper {
                 .id(stock.getId())
                 .name(stock.getName())
                 .price(stock.getPrice())
+                .dividend(stock.getDividend())
                 .build();
     }
 }

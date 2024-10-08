@@ -20,4 +20,6 @@ public class StockEntity {
     private String name;
     @Column(nullable = false)
     private double price;
+    @Column(nullable = false)
+    private double dividend;
 }

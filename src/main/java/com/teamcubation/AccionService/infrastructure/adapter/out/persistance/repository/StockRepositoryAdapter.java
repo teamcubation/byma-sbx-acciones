@@ -2,6 +2,7 @@ package com.teamcubation.AccionService.infrastructure.adapter.out.persistance.re
 
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
+import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.mapper.StockMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
