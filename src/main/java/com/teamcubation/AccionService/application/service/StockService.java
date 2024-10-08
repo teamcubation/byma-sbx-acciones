@@ -6,11 +6,13 @@ import com.teamcubation.AccionService.domain.exception.DuplicateStockException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import com.teamcubation.AccionService.domain.model.Stock;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class StockService implements StockInPort {
 
@@ -24,10 +26,13 @@ public class StockService implements StockInPort {
     public Stock create(Stock accion) throws DuplicateStockException, InvalidStockModelException {
 
         if (isDuplicated(accion.getName())) {
+
+            log.error("Stock with name {} already exists", accion.getName());
             throw new DuplicateStockException("Stock with that name already exists");
         }
 
         if (isInvalid(accion)) {
+            log.error("Invalid stock data");
             throw new InvalidStockModelException("Invalid stock data");
         }
 
@@ -37,6 +42,7 @@ public class StockService implements StockInPort {
     @Override
     public Optional<Stock> findById(Long id) throws StockNotFoundException {
         if (isNotFound(id)) {
+            log.error("Stock with id {} not found", id);
             throw new StockNotFoundException("Stock not found");
         }
         return this.accionRepositoryPort.findById(id);
@@ -50,9 +56,11 @@ public class StockService implements StockInPort {
     @Override
     public Stock update(Stock accion) throws InvalidStockModelException, StockNotFoundException {
         if (isInvalid(accion)) {
+            log.error("Invalid stock data");
             throw new InvalidStockModelException("Invalid stock data");
         }
         if (isNotFound(accion.getId())) {
+            log.error("Stock with id {} not found", accion.getId());
             throw new StockNotFoundException("Stock not found");
         }
         return this.accionRepositoryPort.update(accion);
@@ -61,6 +69,7 @@ public class StockService implements StockInPort {
     @Override
     public void deleteById(Long id) throws StockNotFoundException {
         if (isNotFound(id)) {
+            log.error("Stock with id {} not found", id);
             throw new StockNotFoundException("Stock not found");
         }
         this.accionRepositoryPort.deleteById(id);
