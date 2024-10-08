@@ -1,5 +1,6 @@
 package com.teamcubation.AccionService.infrastructure.adapter.out.persistance.repository;
 
+import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
 
 public class StockMapper {
