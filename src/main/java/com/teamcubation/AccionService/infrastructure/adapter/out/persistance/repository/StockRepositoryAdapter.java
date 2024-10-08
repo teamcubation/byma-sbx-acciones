@@ -16,15 +16,24 @@ public class StockRepositoryAdapter implements StockRepositoryPort {
         this.stockRepository = stockRepository;
     }
 
+    @Override
     Stock create(Stock stock) {
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
         return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
     }
 
-    Optional<Stock> findById(Long id) {
-        return this.findById(id);
+    @Override
+    Stock findById(Long id) {
+        Optional<StockEntity> stockEntity = this.stockRepository.findById(id);
+
+        if (stockEntity.isEmpty()){
+            throw new StockNotFoundException(STOCK_NOT_FOUND);
+        }
+
+        return StockMapper.entityToDomain(stockEntity.get());
     }
 
+    @Override
     List<Stock> getAll() {
         return this.stockRepository
                 .findAll()
@@ -33,11 +42,13 @@ public class StockRepositoryAdapter implements StockRepositoryPort {
                 .collect(Collectors.toList());
     }
 
+    @Override
     Stock update(Stock stock) {
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
         return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
     }
 
+    @Override
     void deleteById(Long id) {
         this.stockRepository.deleteById(id);
     }
