@@ -23,24 +23,33 @@ public class StockService implements StockInPort {
     }
 
     @Override
-    public Stock create(Stock accion) throws DuplicateStockException, InvalidStockModelException {
+    public Stock create(Stock stock) throws DuplicateStockException, InvalidStockModelException {
 
-        if (isDuplicated(accion.getName())) {
-
-            log.error("Stock with name {} already exists", accion.getName());
-            throw new DuplicateStockException("Stock with that name already exists");
+        if (isNull(stock)) {
+            log.error("Invalid stock data");
+            throw new InvalidStockModelException("Invalid stock data");
         }
-
-        if (isInvalid(accion)) {
+        if (isInvalid(stock)) {
             log.error("Invalid stock data");
             throw new InvalidStockModelException("Invalid stock data");
         }
 
-        return this.accionRepositoryPort.create(accion);
+        if (isDuplicated(stock.getName())) {
+
+            log.error("Stock with name {} already exists", stock.getName());
+            throw new DuplicateStockException("Stock with that name already exists");
+        }
+
+
+
+        return this.accionRepositoryPort.create(stock);
     }
 
+
+
     @Override
-    public Optional<Stock> findById(Long id) throws StockNotFoundException {
+    public Optional<Stock> findById(long id) throws StockNotFoundException, InvalidStockModelException {
+
         if (isNotFound(id)) {
             log.error("Stock with id {} not found", id);
             throw new StockNotFoundException("Stock not found");
@@ -54,20 +63,29 @@ public class StockService implements StockInPort {
     }
 
     @Override
-    public Stock update(Stock accion) throws InvalidStockModelException, StockNotFoundException {
-        if (isInvalid(accion)) {
+    public Stock update(Stock stock) throws InvalidStockModelException, StockNotFoundException {
+
+        if (isNull(stock)) {
             log.error("Invalid stock data");
             throw new InvalidStockModelException("Invalid stock data");
         }
-        if (isNotFound(accion.getId())) {
-            log.error("Stock with id {} not found", accion.getId());
+
+        if (isInvalid(stock)) {
+
+            log.error("Invalid stock data");
+            throw new InvalidStockModelException("Invalid stock data");
+        }
+        if (isNotFound(stock.getId())) {
+            log.error("Stock with id {} not found", stock.getId());
             throw new StockNotFoundException("Stock not found");
         }
-        return this.accionRepositoryPort.update(accion);
+        return this.accionRepositoryPort.update(stock);
     }
 
     @Override
-    public void deleteById(Long id) throws StockNotFoundException {
+    public void deleteById(long id) throws StockNotFoundException, InvalidStockModelException {
+
+
         if (isNotFound(id)) {
             log.error("Stock with id {} not found", id);
             throw new StockNotFoundException("Stock not found");
@@ -76,7 +94,15 @@ public class StockService implements StockInPort {
     }
 
     //validations
+    private boolean isNull(Object... stock) {
 
+        for (Object o : stock) {
+            if (o == null) {
+                return true;
+            }
+        }
+        return false;
+    }
     private boolean isNotFound(Long id) {
         return this.accionRepositoryPort.findById(id).isEmpty();
     }
@@ -88,7 +114,8 @@ public class StockService implements StockInPort {
                 .anyMatch(accion -> accion.getName().equals(name));
     }
 
-    private boolean isInvalid(Stock accion) {
-        return accion.getName() == null || accion.getPrice() < 0 || accion.getDividend() < 0;
+    private boolean isInvalid(Stock stock) {
+
+        return stock.getName() == null || stock.getPrice() < 0 || stock.getDividend() < 0;
     }
 }

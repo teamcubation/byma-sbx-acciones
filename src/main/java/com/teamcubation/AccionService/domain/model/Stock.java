@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class Stock {
-
     private long id;
     private String name;
     private double price;
