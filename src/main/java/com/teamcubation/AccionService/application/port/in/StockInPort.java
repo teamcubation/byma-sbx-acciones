@@ -8,6 +8,7 @@ import com.teamcubation.AccionService.domain.model.Stock;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface StockInPort {
 
     Stock create(Stock accion) throws DuplicateStockException, InvalidStockModelException;
