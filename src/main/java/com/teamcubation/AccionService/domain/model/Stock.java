@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class Accion {
+public class Stock {
 
     private long id;
     private String name;
-    private double precio;
-    private double dividendo;
+    private double price;
+    private double dividend;
 }
