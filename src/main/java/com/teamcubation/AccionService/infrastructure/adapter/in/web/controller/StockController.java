@@ -1,6 +1,7 @@
 package com.teamcubation.AccionService.infrastructure.adapter.in.web.controller;
 
-import com.teamcubation.AccionService.domain.model.Accion;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.EditedStockDTO;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
