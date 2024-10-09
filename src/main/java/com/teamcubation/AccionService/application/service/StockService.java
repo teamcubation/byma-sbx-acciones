@@ -19,11 +19,11 @@ import static com.teamcubation.AccionService.application.util.validation.Service
 public class StockService implements StockInPort {
 
 
-    private final StockRepositoryPort accionRepositoryPort;
+    private final StockRepositoryPort stockRepositoryPort;
 
 
-    public StockService(StockRepositoryPort accionRepositoryPort) {
-        this.accionRepositoryPort = accionRepositoryPort;
+    public StockService(StockRepositoryPort stockRepositoryPort) {
+        this.stockRepositoryPort = stockRepositoryPort;
     }
 
     /**
@@ -39,7 +39,7 @@ public class StockService implements StockInPort {
         this.modelIsNull(stock);
         this.modelIsInvalid(stock);
         this.modelIsDuplicated(stock);
-        return this.accionRepositoryPort.create(stock);
+        return this.stockRepositoryPort.create(stock);
     }
 
 
@@ -54,7 +54,7 @@ public class StockService implements StockInPort {
     @Override
     public Optional<Stock> findById(long id) throws StockNotFoundException {
         this.modelIsNotFound(id);
-        return this.accionRepositoryPort.findById(id);
+        return this.stockRepositoryPort.findById(id);
     }
 
 
@@ -65,7 +65,7 @@ public class StockService implements StockInPort {
      */
     @Override
     public List<Stock> getAll() {
-        return this.accionRepositoryPort.getAll();
+        return this.stockRepositoryPort.getAll();
     }
 
     /**
@@ -83,7 +83,7 @@ public class StockService implements StockInPort {
         this.modelIsInvalid(stock);
         this.modelIsNotFound(stock.getId());
         this.modelIsDuplicated(stock);
-        return this.accionRepositoryPort.update(stock);
+        return this.stockRepositoryPort.update(stock);
     }
 
     /**
@@ -95,7 +95,7 @@ public class StockService implements StockInPort {
     @Override
     public void deleteById(long id) throws StockNotFoundException {
         this.modelIsNotFound(id);
-        this.accionRepositoryPort.deleteById(id);
+        this.stockRepositoryPort.deleteById(id);
     }
 
     //validations
@@ -129,11 +129,11 @@ public class StockService implements StockInPort {
 
 
     private boolean isNotFound(Long id) {
-        return this.accionRepositoryPort.findById(id).isEmpty();
+        return this.stockRepositoryPort.findById(id).isEmpty();
     }
 
     private boolean isDuplicated(String name) {
-        return this.accionRepositoryPort
+        return this.stockRepositoryPort
                 .getAll()
                 .stream()
                 .anyMatch(stock -> stock.getName().equals(name));
