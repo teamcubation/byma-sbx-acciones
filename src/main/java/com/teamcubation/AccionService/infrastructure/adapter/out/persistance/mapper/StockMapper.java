@@ -5,6 +5,9 @@ import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.ent
 
 public class StockMapper {
     public static Stock entityToDomain(StockEntity stockEntity) {
+        if (stockEntity == null) {
+            throw new StockNotFoundException(STOCK_NOT_FOUND);
+        }
         return Stock.builder()
                 .id(stockEntity.getId())
                 .name(stockEntity.getName())
@@ -14,6 +17,9 @@ public class StockMapper {
     }
 
     public static StockEntity domainToEntity(Stock stock) {
+        if (stock == null) {
+            throw new StockNotFoundException(STOCK_NOT_FOUND);
+        }
         return StockEntity.builder()
                 .id(stock.getId())
                 .name(stock.getName())

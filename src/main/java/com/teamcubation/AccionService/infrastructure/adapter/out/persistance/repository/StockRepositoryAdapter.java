@@ -1,5 +1,6 @@
 package com.teamcubation.AccionService.infrastructure.adapter.out.persistance.repository;
 
+import com.teamcubation.AccionService.application.port.out.StockRepositoryPort;
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.mapper.StockMapper;
@@ -18,13 +19,16 @@ public class StockRepositoryAdapter implements StockRepositoryPort {
     }
 
     @Override
-    Stock create(Stock stock) {
+    public Stock create(Stock stock) {
+        if (stock == null) {
+            throw new StockNotFoundException(STOCK_NOT_FOUND);
+        }
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
         return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
     }
 
     @Override
-    Stock findById(Long id) {
+    public Stock findById(long id) {
         Optional<StockEntity> stockEntity = this.stockRepository.findById(id);
 
         if (stockEntity.isEmpty()){
@@ -35,7 +39,7 @@ public class StockRepositoryAdapter implements StockRepositoryPort {
     }
 
     @Override
-    List<Stock> getAll() {
+    public List<Stock> getAll() {
         return this.stockRepository
                 .findAll()
                 .stream()
@@ -44,13 +48,16 @@ public class StockRepositoryAdapter implements StockRepositoryPort {
     }
 
     @Override
-    Stock update(Stock stock) {
+    public Stock update(Stock stock) {
+        if (stock == null) {
+            throw new StockNotFoundException(STOCK_NOT_FOUND);
+        }
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
         return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
     }
 
     @Override
-    void deleteById(Long id) {
+    public void deleteById(long id) {
         this.stockRepository.deleteById(id);
     }
 }
