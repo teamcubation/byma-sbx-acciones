@@ -7,6 +7,7 @@ import com.teamcubation.AccionService.domain.exception.InvalidStockModelExceptio
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import com.teamcubation.AccionService.domain.model.Stock;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,7 @@ import java.util.Optional;
 import static com.teamcubation.AccionService.application.service.util.validation.ServiceValidation.*;
 
 @Slf4j
-@Service
 public class StockService implements StockInPort {
-
 
     private final StockOutPort stockOutPort;
 
