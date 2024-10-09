@@ -1,4 +1,4 @@
-package com.teamcubation.AccionService.application.util.validation;
+package com.teamcubation.AccionService.application.service.util.validation;
 
 import com.teamcubation.AccionService.domain.model.Stock;
 
@@ -15,8 +15,8 @@ public class ServiceValidation {
         }
         return false;
     }
-    public static boolean isInvalid(Stock stock) {
+    public static boolean isValid(Stock stock) {
 
-        return stock.getName() == null || stock.getPrice() < 0 || stock.getDividend() < 0;
+        return !(stock.getName() != null && stock.getPrice() > 0 && stock.getDividend() > 0);
     }
 }
