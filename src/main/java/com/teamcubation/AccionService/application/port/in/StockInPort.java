@@ -4,12 +4,10 @@ import com.teamcubation.AccionService.domain.exception.DuplicateStockException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import com.teamcubation.AccionService.domain.model.Stock;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
 public interface StockInPort {
     Stock create(Stock accion) throws DuplicateStockException, InvalidStockModelException;
     Optional<Stock> findById(long id) throws StockNotFoundException;
