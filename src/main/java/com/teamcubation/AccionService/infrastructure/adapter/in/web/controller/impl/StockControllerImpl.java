@@ -1,17 +1,17 @@
 package com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.impl;
 
+import com.teamcubation.AccionService.application.port.in.StockInPort;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.StockController;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.EditedStockDTO;
-import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockDTO;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockRequestDTO;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.EditedStockMapper;
-import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockMapper;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockRequestMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequestMapping("/stock")
 public class StockControllerImpl implements StockController {
     private final StockInPort stockService;
@@ -34,9 +34,9 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody @Valid StockDTO stockDTO) throws Exception {
-        this.validNotNull(stockDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(stockService.create(StockMapper.toStock(stockDTO)));
+    public ResponseEntity<?> create(@RequestBody @Valid StockRequestDTO stockRequestDTO) throws Exception {
+        this.validNotNull(stockRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(stockService.create(StockRequestMapper.toStockToCreate(stockRequestDTO)));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class StockControllerImpl implements StockController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable long id, @RequestBody EditedStockDTO editedStockDTO) throws Exception {
         this.validNotNull(editedStockDTO);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(stockService.update(EditedStockMapper.toStock(editedStockDTO,id)));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(stockService.update(EditedStockMapper.toStockToUpdate(editedStockDTO,id)));
     }
 
     public void validNotNull(Object object) throws ValidationException {
