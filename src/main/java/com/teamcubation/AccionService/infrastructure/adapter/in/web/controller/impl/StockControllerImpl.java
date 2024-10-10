@@ -1,16 +1,22 @@
 package com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.impl;
 
 import com.teamcubation.AccionService.application.port.in.StockInPort;
+import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.StockController;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.EditedStockDTO;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockRequestDTO;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockResponseDTO;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.EditedStockMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockRequestMapper;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockResponseMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/stock")
 public class StockControllerImpl implements StockController {
@@ -23,18 +29,18 @@ public class StockControllerImpl implements StockController {
     @Override
     @GetMapping("/")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(stockService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(this.getAllStockToStockResponseDTO());
     }
 
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable long id) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(stockService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(getByIdToStockResponseDTO(id));
     }
-
+    
     @Override
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody @Valid StockRequestDTO stockRequestDTO) throws Exception {
+    public ResponseEntity<?> create(@Valid @RequestBody StockRequestDTO stockRequestDTO) throws Exception {
         this.validNotNull(stockRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(stockService.create(StockRequestMapper.toStockToCreate(stockRequestDTO)));
     }
@@ -53,9 +59,17 @@ public class StockControllerImpl implements StockController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(stockService.update(EditedStockMapper.toStockToUpdate(editedStockDTO,id)));
     }
 
-    public void validNotNull(Object object) throws ValidationException {
+    private void validNotNull(Object object) throws ValidationException {
         if (object == null) {
             throw new ValidationException("Object send is null");
         }
+    }
+
+    private List<StockResponseDTO> getAllStockToStockResponseDTO() {
+        return stockService.getAll().stream().map(stockModel -> StockResponseMapper.toStockResponse(stockModel)).collect(Collectors.toList());
+    }
+
+    private StockResponseDTO getByIdToStockResponseDTO(long id) throws Exception {
+        return StockResponseMapper.toStockResponse(stockService.findById(id));
     }
 }
