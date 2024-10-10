@@ -1,13 +1,18 @@
 package com.teamcubation.AccionService.infrastructure.adapter.out.persistance.mapper;
 
+import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
+import lombok.extern.slf4j.Slf4j;
 
+import static com.teamcubation.AccionService.application.service.util.validation.ServiceValidation.INVALID_STOCK_DATA;
+
+@Slf4j
 public class StockMapper {
-    public static Stock entityToDomain(StockEntity stockEntity) throws Exception {
-        //TODO: agregar constante y custom exception cuando esten definidas
+    public static Stock entityToDomain(StockEntity stockEntity) throws InvalidStockModelException {
         if (stockEntity == null) {
-            throw new Exception("STOCK_NOT_FOUND");
+            log.error(INVALID_STOCK_DATA);
+            throw new InvalidStockModelException(INVALID_STOCK_DATA);
         }
         return Stock.builder()
                 .id(stockEntity.getId())
@@ -17,10 +22,10 @@ public class StockMapper {
                 .build();
     }
 
-    public static StockEntity domainToEntity(Stock stock) throws Exception {
-        //TODO: agregar constante y custom exception cuando esten definidas
+    public static StockEntity domainToEntity(Stock stock) throws InvalidStockModelException {
         if (stock == null) {
-            throw new Exception("STOCK_NOT_FOUND");
+            log.error(INVALID_STOCK_DATA);
+            throw new InvalidStockModelException(INVALID_STOCK_DATA);
         }
         return StockEntity.builder()
                 .id(stock.getId())

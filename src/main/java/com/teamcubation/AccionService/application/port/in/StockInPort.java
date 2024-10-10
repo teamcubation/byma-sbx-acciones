@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface StockInPort {
     Stock create(Stock stock) throws DuplicateStockException, InvalidStockModelException;
-    Stock findById(long id) throws StockNotFoundException;
-    List<Stock> getAll();
+    Stock findById(long id) throws StockNotFoundException, InvalidStockModelException;
+    List<Stock> getAll() throws InvalidStockModelException;
     Stock update(Stock stock) throws InvalidStockModelException, StockNotFoundException, DuplicateStockException;
-    void deleteById(long id) throws StockNotFoundException;
+    void deleteById(long id) throws StockNotFoundException, InvalidStockModelException;
 }

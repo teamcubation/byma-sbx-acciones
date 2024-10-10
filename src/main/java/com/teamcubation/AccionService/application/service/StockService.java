@@ -42,7 +42,7 @@ public class StockService implements StockInPort {
     }
 
     @Override
-    public Stock findById(long id) throws StockNotFoundException {
+    public Stock findById(long id) throws StockNotFoundException, InvalidStockModelException {
         validateStockIsNotFound(id);
         return this.stockOutPort.findById(id);
     }
@@ -54,7 +54,7 @@ public class StockService implements StockInPort {
      * @return A list of all stocks.
      */
     @Override
-    public List<Stock> getAll() {
+    public List<Stock> getAll() throws InvalidStockModelException {
         return this.stockOutPort.getAll();
     }
 
@@ -83,7 +83,7 @@ public class StockService implements StockInPort {
      * @throws StockNotFoundException If no stock with the given ID exists.
      */
     @Override
-    public void deleteById(long id) throws StockNotFoundException {
+    public void deleteById(long id) throws StockNotFoundException, InvalidStockModelException {
         this.validateStockIsNotFound(id);
         this.stockOutPort.deleteById(id);
     }
@@ -103,14 +103,14 @@ public class StockService implements StockInPort {
         }
     }
 
-    private void validateStockIsDuplicated(Stock stock) throws DuplicateStockException {
+    private void validateStockIsDuplicated(Stock stock) throws DuplicateStockException, InvalidStockModelException {
         if (isDuplicated(stock.getName())) {
             log.error(STOCK_WITH_NAME_ALREADY_EXISTS, stock.getName());
             throw new DuplicateStockException(STOCK_WITH_NAME_ALREADY_EXISTS);
         }
     }
 
-    private void validateStockIsNotFound(long id) throws StockNotFoundException {
+    private void validateStockIsNotFound(long id) throws StockNotFoundException, InvalidStockModelException {
         if (isNotFound(id)) {
             log.error(STOCK_NOT_FOUND);
             throw new StockNotFoundException(STOCK_NOT_FOUND);
@@ -118,11 +118,11 @@ public class StockService implements StockInPort {
     }
 
 
-    private boolean isNotFound(Long id) throws StockNotFoundException {
+    private boolean isNotFound(Long id) throws StockNotFoundException, InvalidStockModelException {
         return this.stockOutPort.findById(id) == null;
     }
 
-    private boolean isDuplicated(String name) {
+    private boolean isDuplicated(String name) throws InvalidStockModelException {
         return this.stockOutPort
                 .getAll()
                 .stream()
