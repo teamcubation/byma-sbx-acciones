@@ -1,8 +1,9 @@
 package com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
+import lombok.Data;
 
+@Data
 @Builder
 public class StockResponseDTO {
     private long id;
