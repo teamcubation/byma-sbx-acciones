@@ -29,15 +29,15 @@ public class StockControllerImpl implements StockController {
     @Override
     @GetMapping("/")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.getAllStockToStockResponseDTO());
+        return ResponseEntity.status(HttpStatus.OK).body(this.getAllStockModelToStockResponseDTO());
     }
 
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable long id) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(getByIdToStockResponseDTO(id));
+        return ResponseEntity.status(HttpStatus.OK).body(getByIdStockModelToStockResponseDTO(id));
     }
-    
+
     @Override
     @PostMapping("/")
     public ResponseEntity<?> create(@Valid @RequestBody StockRequestDTO stockRequestDTO) throws Exception {
@@ -65,11 +65,11 @@ public class StockControllerImpl implements StockController {
         }
     }
 
-    private List<StockResponseDTO> getAllStockToStockResponseDTO() {
+    private List<StockResponseDTO> getAllStockModelToStockResponseDTO() {
         return stockService.getAll().stream().map(stockModel -> StockResponseMapper.toStockResponse(stockModel)).collect(Collectors.toList());
     }
 
-    private StockResponseDTO getByIdToStockResponseDTO(long id) throws Exception {
+    private StockResponseDTO getByIdStockModelToStockResponseDTO(long id) throws Exception {
         return StockResponseMapper.toStockResponse(stockService.findById(id));
     }
 }
