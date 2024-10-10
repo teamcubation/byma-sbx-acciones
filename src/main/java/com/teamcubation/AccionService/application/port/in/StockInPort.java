@@ -6,7 +6,6 @@ import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import com.teamcubation.AccionService.domain.model.Stock;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StockInPort {
     Stock create(Stock stock) throws DuplicateStockException, InvalidStockModelException;

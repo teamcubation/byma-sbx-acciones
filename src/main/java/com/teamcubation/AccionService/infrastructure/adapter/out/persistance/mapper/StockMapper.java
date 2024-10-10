@@ -9,6 +9,7 @@ import static com.teamcubation.AccionService.application.service.util.validation
 
 @Slf4j
 public class StockMapper {
+
     public static Stock entityToDomain(StockEntity stockEntity) throws InvalidStockModelException {
         if (stockEntity == null) {
             log.error(INVALID_STOCK_DATA);

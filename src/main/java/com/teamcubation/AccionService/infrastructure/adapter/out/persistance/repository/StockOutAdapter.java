@@ -19,6 +19,7 @@ import static com.teamcubation.AccionService.application.service.util.validation
 @Repository
 @Slf4j
 public class StockOutAdapter implements StockOutPort {
+
     private final SpringStockRepository stockRepository;
 
     public StockOutAdapter(SpringStockRepository stockRepository) {
