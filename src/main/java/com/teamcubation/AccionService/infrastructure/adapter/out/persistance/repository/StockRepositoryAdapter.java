@@ -6,9 +6,9 @@ import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.ent
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.mapper.StockMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class StockRepositoryAdapter implements StockRepositoryPort {
@@ -18,41 +18,51 @@ public class StockRepositoryAdapter implements StockRepositoryPort {
         this.stockRepository = stockRepository;
     }
 
+    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public Stock create(Stock stock) {
+    public Stock create(Stock stock) throws Exception {
         if (stock == null) {
-            throw new StockNotFoundException(STOCK_NOT_FOUND);
+            throw new Exception("STOCK_NOT_FOUND");
         }
+
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
+
         return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
     }
 
+    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public Stock findById(long id) {
+    public Stock findById(long id) throws Exception {
         Optional<StockEntity> stockEntity = this.stockRepository.findById(id);
 
         if (stockEntity.isEmpty()){
-            throw new StockNotFoundException(STOCK_NOT_FOUND);
+            throw new Exception("STOCK_NOT_FOUND");
         }
 
         return StockMapper.entityToDomain(stockEntity.get());
     }
 
+    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public List<Stock> getAll() {
-        return this.stockRepository
-                .findAll()
-                .stream()
-                .map(StockMapper::entityToDomain)
-                .collect(Collectors.toList());
+    public List<Stock> getAll() throws Exception {
+        List<Stock> stocks = new ArrayList<>();
+
+        for (StockEntity stockEntity: this.stockRepository.findAll()) {
+            stocks.add(StockMapper.entityToDomain(stockEntity));
+        }
+
+        return stocks;
     }
 
+    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public Stock update(Stock stock) {
+    public Stock update(Stock stock) throws Exception {
         if (stock == null) {
-            throw new StockNotFoundException(STOCK_NOT_FOUND);
+            throw new Exception("STOCK_NOT_FOUND");
         }
+
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
+
         return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
     }
 

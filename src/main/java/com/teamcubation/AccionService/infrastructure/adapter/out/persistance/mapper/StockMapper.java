@@ -4,9 +4,10 @@ import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
 
 public class StockMapper {
-    public static Stock entityToDomain(StockEntity stockEntity) {
+    public static Stock entityToDomain(StockEntity stockEntity) throws Exception {
+        //TODO: agregar constante y custom exception cuando esten definidas
         if (stockEntity == null) {
-            throw new StockNotFoundException(STOCK_NOT_FOUND);
+            throw new Exception("STOCK_NOT_FOUND");
         }
         return Stock.builder()
                 .id(stockEntity.getId())
@@ -16,9 +17,10 @@ public class StockMapper {
                 .build();
     }
 
-    public static StockEntity domainToEntity(Stock stock) {
+    public static StockEntity domainToEntity(Stock stock) throws Exception {
+        //TODO: agregar constante y custom exception cuando esten definidas
         if (stock == null) {
-            throw new StockNotFoundException(STOCK_NOT_FOUND);
+            throw new Exception("STOCK_NOT_FOUND");
         }
         return StockEntity.builder()
                 .id(stock.getId())
