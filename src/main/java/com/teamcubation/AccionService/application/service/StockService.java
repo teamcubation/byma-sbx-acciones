@@ -41,7 +41,7 @@ public class StockService implements StockInPort {
     }
 
     @Override
-    public Stock findById(long id) throws StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
+    public Stock findById(long id) throws StockNotFoundException, InvalidStockEntityException {
         validateStockIsNotFound(id);
         return this.stockOutPort.findById(id);
     }
@@ -81,7 +81,7 @@ public class StockService implements StockInPort {
      * @throws StockNotFoundException If no stock with the given ID exists.
      */
     @Override
-    public void deleteById(long id) throws StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
+    public void deleteById(long id) throws StockNotFoundException, InvalidStockEntityException {
         this.validateStockIsNotFound(id);
         this.stockOutPort.deleteById(id);
     }
@@ -108,16 +108,19 @@ public class StockService implements StockInPort {
         }
     }
 
-    private void validateStockIsNotFound(long id) throws StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
-        if (isNotFound(id)) {
+    private void validateStockIsNotFound(long id) throws StockNotFoundException, InvalidStockEntityException {
+        if (stockNotExists(id)) {
             log.error(STOCK_NOT_FOUND);
             throw new StockNotFoundException(STOCK_NOT_FOUND);
         }
     }
 
+    private boolean stockNotExists(long id) throws InvalidStockEntityException, StockNotFoundException {
+        return !stockExists(id);
+    }
 
-    private boolean isNotFound(Long id) throws StockNotFoundException, InvalidStockEntityException {
-        return this.stockOutPort.findById(id) == null;
+    private boolean stockExists(long id) throws InvalidStockEntityException, StockNotFoundException {
+        return this.stockOutPort.findById(id) != null;
     }
 
     private boolean isDuplicated(String name) throws InvalidStockEntityException {
