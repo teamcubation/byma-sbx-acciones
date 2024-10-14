@@ -3,6 +3,7 @@ package com.teamcubation.AccionService.application.service;
 import com.teamcubation.AccionService.application.port.in.StockInPort;
 import com.teamcubation.AccionService.application.port.out.StockOutPort;
 import com.teamcubation.AccionService.domain.exception.DuplicateStockException;
+import com.teamcubation.AccionService.domain.exception.InvalidStockEntityException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import com.teamcubation.AccionService.domain.model.Stock;
@@ -32,7 +33,7 @@ public class StockService implements StockInPort {
      * @throws InvalidStockModelException If the stock has invalid data or is null.
      */
     @Override
-    public Stock create(Stock stock) throws DuplicateStockException, InvalidStockModelException {
+    public Stock create(Stock stock) throws DuplicateStockException, InvalidStockModelException, InvalidStockEntityException {
         this.validateStockIsNull(stock);
         this.validateStockIsValid(stock);
         this.validateStockIsDuplicated(stock);
@@ -40,7 +41,7 @@ public class StockService implements StockInPort {
     }
 
     @Override
-    public Stock findById(long id) throws StockNotFoundException, InvalidStockModelException {
+    public Stock findById(long id) throws StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
         validateStockIsNotFound(id);
         return this.stockOutPort.findById(id);
     }
@@ -51,7 +52,7 @@ public class StockService implements StockInPort {
      * @return A list of all stocks.
      */
     @Override
-    public List<Stock> getAll() throws InvalidStockModelException {
+    public List<Stock> getAll() throws InvalidStockEntityException {
         return this.stockOutPort.getAll();
     }
 
@@ -65,7 +66,7 @@ public class StockService implements StockInPort {
      * @throws DuplicateStockException If a stock with the same name already exists.
      */
     @Override
-    public Stock update(Stock stock) throws InvalidStockModelException, StockNotFoundException, DuplicateStockException {
+    public Stock update(Stock stock) throws InvalidStockModelException, StockNotFoundException, DuplicateStockException, InvalidStockEntityException {
         this.validateStockIsNull(stock);
         this.validateStockIsValid(stock);
         this.validateStockIsNotFound(stock.getId());
@@ -80,7 +81,7 @@ public class StockService implements StockInPort {
      * @throws StockNotFoundException If no stock with the given ID exists.
      */
     @Override
-    public void deleteById(long id) throws StockNotFoundException, InvalidStockModelException {
+    public void deleteById(long id) throws StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
         this.validateStockIsNotFound(id);
         this.stockOutPort.deleteById(id);
     }
@@ -100,14 +101,14 @@ public class StockService implements StockInPort {
         }
     }
 
-    private void validateStockIsDuplicated(Stock stock) throws DuplicateStockException, InvalidStockModelException {
+    private void validateStockIsDuplicated(Stock stock) throws DuplicateStockException, InvalidStockEntityException {
         if (isDuplicated(stock.getName())) {
             log.error(STOCK_WITH_NAME_ALREADY_EXISTS, stock.getName());
             throw new DuplicateStockException(STOCK_WITH_NAME_ALREADY_EXISTS);
         }
     }
 
-    private void validateStockIsNotFound(long id) throws StockNotFoundException, InvalidStockModelException {
+    private void validateStockIsNotFound(long id) throws StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
         if (isNotFound(id)) {
             log.error(STOCK_NOT_FOUND);
             throw new StockNotFoundException(STOCK_NOT_FOUND);
@@ -115,11 +116,11 @@ public class StockService implements StockInPort {
     }
 
 
-    private boolean isNotFound(Long id) throws StockNotFoundException, InvalidStockModelException {
+    private boolean isNotFound(Long id) throws StockNotFoundException, InvalidStockEntityException {
         return this.stockOutPort.findById(id) == null;
     }
 
-    private boolean isDuplicated(String name) throws InvalidStockModelException {
+    private boolean isDuplicated(String name) throws InvalidStockEntityException {
         return this.stockOutPort
                 .getAll()
                 .stream()
