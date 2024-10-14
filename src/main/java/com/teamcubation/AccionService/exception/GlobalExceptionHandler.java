@@ -47,7 +47,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(getValidationErrorsMap(ex));
     }
 
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGlobalException(Exception e, HttpServletRequest request) {
 
@@ -75,5 +74,4 @@ public class GlobalExceptionHandler {
         });
         return errors;
     }
-
 }

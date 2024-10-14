@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@RestController
 @RequestMapping("/stock")
 public class StockControllerImpl implements StockController {
     private static final String GETTING_ALL_STOCKS = "Getting all stocks";
