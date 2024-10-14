@@ -83,7 +83,7 @@ public class StockControllerImpl implements StockController {
         ControllerValidation.validateNotNull(editedStockDTO);
         StockResponseDTO stockUpdate = StockResponseMapper.toStockResponse(stockService.update(EditedStockMapper.toStockToUpdate(editedStockDTO,id)));
         log.info(UPDATED_STOCK, id, stockUpdate.toString());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(stockUpdate);
+        return ResponseEntity.status(HttpStatus.OK).body(stockUpdate);
     }
 
     public List<StockResponseDTO> getAllStockModelToStockResponseDTO() throws Exception {
