@@ -3,6 +3,7 @@ package com.teamcubation.AccionService.exception;
 import com.teamcubation.AccionService.domain.exception.DuplicatedStockException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.exception.InvalidStockDTOException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleInvalidStockModelException(InvalidStockModelException e, HttpServletRequest request) {
 
         return ResponseEntity
-                .badRequest()
-                .body(this.createErrorMessage(e, request, HttpStatus.BAD_REQUEST));
+                .internalServerError()
+                .body(this.createErrorMessage(e, request, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @ExceptionHandler(StockNotFoundException.class)
@@ -45,6 +46,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         return ResponseEntity.badRequest().body(getValidationErrorsMap(ex));
+    }
+
+    @ExceptionHandler(InvalidStockDTOException.class)
+    public ResponseEntity<?> handleInvalidStockDTOException(InvalidStockDTOException e, HttpServletRequest request) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(this.createErrorMessage(e, request, HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(Exception.class)
