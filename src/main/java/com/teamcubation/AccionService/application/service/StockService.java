@@ -2,7 +2,7 @@ package com.teamcubation.AccionService.application.service;
 
 import com.teamcubation.AccionService.application.port.in.StockInPort;
 import com.teamcubation.AccionService.application.port.out.StockOutPort;
-import com.teamcubation.AccionService.domain.exception.DuplicateStockException;
+import com.teamcubation.AccionService.domain.exception.DuplicatedStockException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockEntityException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
@@ -29,11 +29,11 @@ public class StockService implements StockInPort {
      *
      * @param stock The stock to create.
      * @return The created stock.
-     * @throws DuplicateStockException If a stock with the same name already exists.
+     * @throws DuplicatedStockException If a stock with the same name already exists.
      * @throws InvalidStockModelException If the stock has invalid data or is null.
      */
     @Override
-    public Stock create(Stock stock) throws DuplicateStockException, InvalidStockModelException, InvalidStockEntityException {
+    public Stock create(Stock stock) throws DuplicatedStockException, InvalidStockModelException, InvalidStockEntityException {
         this.validateStockIsNull(stock);
         this.validateStockIsValid(stock);
         this.validateStockIsDuplicated(stock);
@@ -63,10 +63,10 @@ public class StockService implements StockInPort {
      * @return The updated stock.
      * @throws InvalidStockModelException If the stock has invalid data or is null.
      * @throws StockNotFoundException If no stock with the given ID exists.
-     * @throws DuplicateStockException If a stock with the same name already exists.
+     * @throws DuplicatedStockException If a stock with the same name already exists.
      */
     @Override
-    public Stock update(Stock stock) throws InvalidStockModelException, StockNotFoundException, DuplicateStockException, InvalidStockEntityException {
+    public Stock update(Stock stock) throws InvalidStockModelException, StockNotFoundException, DuplicatedStockException, InvalidStockEntityException {
         this.validateStockIsNull(stock);
         this.validateStockIsValid(stock);
         this.validateStockIsNotFound(stock.getId());
@@ -101,10 +101,10 @@ public class StockService implements StockInPort {
         }
     }
 
-    private void validateStockIsDuplicated(Stock stock) throws DuplicateStockException, InvalidStockEntityException {
+    private void validateStockIsDuplicated(Stock stock) throws DuplicatedStockException, InvalidStockEntityException {
         if (isDuplicated(stock.getName())) {
             log.error(STOCK_WITH_NAME_ALREADY_EXISTS, stock.getName());
-            throw new DuplicateStockException(STOCK_WITH_NAME_ALREADY_EXISTS);
+            throw new DuplicatedStockException(STOCK_WITH_NAME_ALREADY_EXISTS);
         }
     }
 
