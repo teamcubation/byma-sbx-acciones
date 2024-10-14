@@ -9,20 +9,21 @@ import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.d
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.EditedStockMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockRequestMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockResponseMapper;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.util.validation.ControllerValidation;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RequestMapping("/stock")
 public class StockControllerImpl implements StockController {
-    public static final String INVALID_OBJECT = " sent is null";
+
 
     private final StockInPort stockService;
 
@@ -32,7 +33,7 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @GetMapping("/")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll() throws Exception {
         log.info("Getting all stocks");
         List<StockResponseDTO> stockResponses = this.getAllStockModelToStockResponseDTO();
         log.info(stockResponses.toString());
@@ -52,7 +53,7 @@ public class StockControllerImpl implements StockController {
     @PostMapping("/")
     public ResponseEntity<?> create(@Valid @RequestBody StockRequestDTO stockRequestDTO) throws Exception {
         log.info("Creating stock {}", stockRequestDTO.toString());
-        this.validNotNull(stockRequestDTO);
+        ControllerValidation.validateNotNull(stockRequestDTO);
         Stock stockCreated = stockService.create(StockRequestMapper.toStockToCreate(stockRequestDTO));
         log.info("Stock was created: {}", stockCreated.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(stockCreated);
@@ -71,20 +72,20 @@ public class StockControllerImpl implements StockController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable long id, @RequestBody EditedStockDTO editedStockDTO) throws Exception {
         log.info("Updating stock by id {}", id);
-        this.validNotNull(editedStockDTO);
+        ControllerValidation.validateNotNull(editedStockDTO);
         StockResponseDTO stockUpdate = StockResponseMapper.toStockResponse(stockService.update(EditedStockMapper.toStockToUpdate(editedStockDTO,id)));
         log.info("Stock was updated: {}", stockUpdate.toString());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(stockUpdate);
     }
 
-    private void validNotNull(Object object) throws ValidationException {
-        if (object == null) {
-            throw new ValidationException(object.getClass().getName() + INVALID_OBJECT);
-        }
-    }
+    public List<StockResponseDTO> getAllStockModelToStockResponseDTO() throws Exception {
+        List<StockResponseDTO> responseStocks = new ArrayList<>();
 
-    private List<StockResponseDTO> getAllStockModelToStockResponseDTO() {
-        return stockService.getAll().stream().map(stockModel -> StockResponseMapper.toStockResponse(stockModel)).collect(Collectors.toList());
+        for (Stock modelStock: this.stockService.getAll()) {
+            responseStocks.add(StockResponseMapper.toStockResponse(modelStock));
+        }
+
+        return responseStocks;
     }
 
     private StockResponseDTO getByIdStockModelToStockResponseDTO(long id) throws Exception {

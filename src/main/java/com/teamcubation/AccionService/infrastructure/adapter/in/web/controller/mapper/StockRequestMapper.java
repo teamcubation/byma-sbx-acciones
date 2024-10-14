@@ -2,9 +2,11 @@ package com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.
 
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockRequestDTO;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.util.validation.ControllerValidation;
 
 public class StockRequestMapper {
-    public static Stock toStockToCreate(StockRequestDTO stockRequestDTO) {
+    public static Stock toStockToCreate(StockRequestDTO stockRequestDTO) throws Exception {
+        ControllerValidation.validateNotNull(stockRequestDTO);
         return Stock.builder().name(stockRequestDTO.getName()).price(stockRequestDTO.getPrice()).dividend(stockRequestDTO.getDividend()).build();
     }
 }

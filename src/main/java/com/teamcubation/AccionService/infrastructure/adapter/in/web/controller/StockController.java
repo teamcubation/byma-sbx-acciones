@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface StockController {
 
-    ResponseEntity<?> getAll();
+    ResponseEntity<?> getAll() throws Exception;
 
     ResponseEntity<?> getById(@PathVariable long id) throws Exception;
 
