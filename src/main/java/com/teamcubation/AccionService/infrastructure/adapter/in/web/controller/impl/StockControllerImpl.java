@@ -1,11 +1,15 @@
 package com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.impl;
 
 import com.teamcubation.AccionService.application.port.in.StockInPort;
+import com.teamcubation.AccionService.domain.exception.DuplicatedStockException;
+import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
+import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.StockController;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.UpdatedStockDTO;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockRequestDTO;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.StockResponseDTO;
+import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.exception.InvalidStockDTOException;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.UpdatedStockMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockRequestMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockResponseMapper;
@@ -41,7 +45,7 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @GetMapping("/")
-    public ResponseEntity<?> getAll() throws Exception {
+    public ResponseEntity<?> getAll() throws InvalidStockModelException {
         log.info(GETTING_ALL_STOCKS);
         List<StockResponseDTO> stockResponses = this.getAllStockModelToStockResponseDTO();
         log.info(stockResponses.toString());
@@ -50,7 +54,7 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable long id) throws Exception {
+    public ResponseEntity<?> getById(@PathVariable long id) throws StockNotFoundException, InvalidStockModelException {
         log.info(GETTING_STOCK_BY_ID, id);
         StockResponseDTO stockResponseDTO = getByIdStockModelToStockResponseDTO(id);
         log.info(STOCK_FOUND_BY_ID, id,  stockResponseDTO.toString());
@@ -59,9 +63,8 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<?> create(@Valid @RequestBody StockRequestDTO stockRequestDTO) throws Exception {
+    public ResponseEntity<?> create(@Valid @RequestBody StockRequestDTO stockRequestDTO) throws InvalidStockDTOException, DuplicatedStockException, InvalidStockModelException {
         log.info(CREATING_STOCK, stockRequestDTO.toString());
-        ControllerValidation.validateNotNull(stockRequestDTO);
         Stock stockCreated = stockService.create(StockRequestMapper.toStockToCreate(stockRequestDTO));
         log.info(CREATED_STOCK, stockCreated.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(stockCreated);
@@ -69,7 +72,7 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable long id) throws Exception {
+    public ResponseEntity<?> deleteById(@PathVariable long id) throws StockNotFoundException {
         log.info(DELETING_STOCK_BY_ID, id);
         stockService.deleteById(id);
         log.info(DELETED_STOCK, id);
@@ -78,15 +81,14 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable long id, @RequestBody UpdatedStockDTO editedStockDTO) throws Exception {
+    public ResponseEntity<?> update(@PathVariable long id, @RequestBody UpdatedStockDTO editedStockDTO) throws InvalidStockDTOException, DuplicatedStockException, StockNotFoundException, InvalidStockModelException {
         log.info(UPDATING_STOCK_BY_ID, id);
-        ControllerValidation.validateNotNull(editedStockDTO);
         StockResponseDTO stockUpdate = StockResponseMapper.toStockResponse(stockService.update(UpdatedStockMapper.toStockToUpdate(editedStockDTO,id)));
         log.info(UPDATED_STOCK, id, stockUpdate.toString());
         return ResponseEntity.status(HttpStatus.OK).body(stockUpdate);
     }
 
-    public List<StockResponseDTO> getAllStockModelToStockResponseDTO() throws Exception {
+    public List<StockResponseDTO> getAllStockModelToStockResponseDTO() throws InvalidStockModelException {
         List<StockResponseDTO> responseStocks = new ArrayList<>();
 
         for (Stock modelStock: this.stockService.getAll()) {
@@ -96,7 +98,7 @@ public class StockControllerImpl implements StockController {
         return responseStocks;
     }
 
-    private StockResponseDTO getByIdStockModelToStockResponseDTO(long id) throws Exception {
+    private StockResponseDTO getByIdStockModelToStockResponseDTO(long id) throws StockNotFoundException, InvalidStockModelException {
         return StockResponseMapper.toStockResponse(stockService.findById(id));
     }
 }
