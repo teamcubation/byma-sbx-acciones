@@ -16,5 +16,14 @@ public class AppConfiguration {
     @Value("${logging.level.root}")
     private String rootLogLevel;
 
+    @Value("${spring.datasource.url}")
+    private String datasourceUrl;
+
+    @Value("${spring.datasource.username}")
+    private String datasourceUsername;
+
+    @Value("${spring.datasource.password}")
+    private String datasourcePassword;
+
 
 }
