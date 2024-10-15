@@ -1,6 +1,5 @@
 package com.teamcubation.AccionService.infrastructure.adapter.in.web.controller;
 
-import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.dto.EditedStockDTO;
 import com.teamcubation.AccionService.domain.exception.DuplicatedStockException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface StockController {
     @Operation(summary = "Get all known stocks.", description = "Get all stocks which have been safed in database.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Get all stocks successfully.")})
-    ResponseEntity<?> getAll() throws Exception;
+    ResponseEntity<?> getAll() throws InvalidStockModelException;
 
     @Operation(summary = "Get stock by id.", description = "Get stock whose id is searched.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Get stock by id successfully.")})
@@ -33,9 +32,7 @@ public interface StockController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Stock deleted successfully.")})
     ResponseEntity<?> deleteById(@PathVariable long id) throws StockNotFoundException;
 
-    ResponseEntity<?> update(@PathVariable long id, @RequestBody UpdatedStockDTO editedStockDTO) throws InvalidStockModelException, StockNotFoundException, DuplicatedStockException, InvalidStockDTOException;
-
     @Operation(summary = "Update stock by id.", description = "Update a stock by id which have been safed in database.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Stock updated successfully.")})
-    ResponseEntity<?> update(@PathVariable long id, @RequestBody EditedStockDTO editedStockDTO) throws Exception;
+    ResponseEntity<?> update(@PathVariable long id, @RequestBody UpdatedStockDTO updatedStockDTO) throws InvalidStockModelException, StockNotFoundException, DuplicatedStockException, InvalidStockDTOException;;
 }

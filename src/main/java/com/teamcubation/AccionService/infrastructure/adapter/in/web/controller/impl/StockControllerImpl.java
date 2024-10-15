@@ -13,7 +13,6 @@ import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.e
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.UpdatedStockMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockRequestMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.mapper.StockResponseMapper;
-import com.teamcubation.AccionService.infrastructure.adapter.in.web.controller.util.validation.ControllerValidation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -81,9 +80,9 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable long id, @RequestBody UpdatedStockDTO editedStockDTO) throws InvalidStockDTOException, DuplicatedStockException, StockNotFoundException, InvalidStockModelException {
+    public ResponseEntity<?> update(@PathVariable long id, @RequestBody UpdatedStockDTO updatedStockDTO) throws InvalidStockDTOException, DuplicatedStockException, StockNotFoundException, InvalidStockModelException {
         log.info(UPDATING_STOCK_BY_ID, id);
-        StockResponseDTO stockUpdate = StockResponseMapper.toStockResponse(stockService.update(UpdatedStockMapper.toStockToUpdate(editedStockDTO,id)));
+        StockResponseDTO stockUpdate = StockResponseMapper.toStockResponse(stockService.update(UpdatedStockMapper.toStockToUpdate(updatedStockDTO,id)));
         log.info(UPDATED_STOCK, id, stockUpdate.toString());
         return ResponseEntity.status(HttpStatus.OK).body(stockUpdate);
     }
