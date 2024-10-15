@@ -24,6 +24,4 @@ public class AppConfiguration {
 
     @Value("${spring.datasource.password}")
     private String datasourcePassword;
-
-
 }

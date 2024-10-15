@@ -10,8 +10,8 @@ public class StockRequestDTO {
     private String name;
 
     @NotNull(message = "The price is mandatory")
-    private double price;
+    private Double price;
 
     @NotNull(message = "The dividend is mandatory")
-    private double dividend;
+    private Double dividend;
 }

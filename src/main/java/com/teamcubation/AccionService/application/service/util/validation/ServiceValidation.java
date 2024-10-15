@@ -4,8 +4,9 @@ import com.teamcubation.AccionService.domain.model.Stock;
 
 public class ServiceValidation {
     public static final String INVALID_STOCK_DATA = "Invalid stock data";
-    public static final String STOCK_WITH_NAME_ALREADY_EXISTS = "Stock with name {} already exists";
+    public static final String STOCK_WITH_NAME_ALREADY_EXISTS = "Stock with that name already exists";
     public static final String STOCK_NOT_FOUND = "Stock not found";
+    public static final String NAME_REGEX = "^[0-9]+.*";
 
     public static boolean isNull(Object... stock) {
         for (Object o : stock) {
@@ -17,6 +18,6 @@ public class ServiceValidation {
     }
     public static boolean isValid(Stock stock) {
 
-        return !(stock.getName() != null && stock.getPrice() > 0 && stock.getDividend() > 0);
+        return !(stock.getName() != null && stock.getPrice() > 0 && stock.getDividend() > 0 && !(stock.getName().trim().matches(NAME_REGEX)));
     }
 }
