@@ -1,9 +1,13 @@
 package com.teamcubation.AccionService.infrastructure.adapter.out.persistance.repository;
 
-import com.teamcubation.AccionService.application.port.out.StockRepositoryPort;
+import com.teamcubation.AccionService.application.port.out.StockOutPort;
+import com.teamcubation.AccionService.domain.exception.*;
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.mapper.StockMapper;
+import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.util.validation.OutValidation;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,40 +15,38 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class StockRepositoryAdapter implements StockRepositoryPort {
+@Slf4j
+public class StockOutAdapter implements StockOutPort {
+
     private final SpringStockRepository stockRepository;
 
-    public StockRepositoryAdapter(SpringStockRepository stockRepository) {
+    public StockOutAdapter(SpringStockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
 
-    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public Stock create(Stock stock) throws Exception {
-        if (stock == null) {
-            throw new Exception("STOCK_NOT_FOUND");
-        }
+    public Stock create(Stock stock) throws InvalidStockModelException, InvalidStockEntityException {
+        OutValidation.validateStockIsNull(stock);
 
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
 
         return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
     }
 
-    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public Stock findById(long id) throws Exception {
+    public Stock findById(long id) throws StockNotFoundException, InvalidStockEntityException {
         Optional<StockEntity> stockEntity = this.stockRepository.findById(id);
 
         if (stockEntity.isEmpty()){
-            throw new Exception("STOCK_NOT_FOUND");
+            log.error(OutValidation.STOCK_NOT_FOUND);
+            throw new StockNotFoundException(OutValidation.STOCK_NOT_FOUND);
         }
 
         return StockMapper.entityToDomain(stockEntity.get());
     }
 
-    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public List<Stock> getAll() throws Exception {
+    public List<Stock> getAll() throws InvalidStockEntityException {
         List<Stock> stocks = new ArrayList<>();
 
         for (StockEntity stockEntity: this.stockRepository.findAll()) {
@@ -54,12 +56,9 @@ public class StockRepositoryAdapter implements StockRepositoryPort {
         return stocks;
     }
 
-    //TODO: Agregar las custom exception cuando esten definidas
     @Override
-    public Stock update(Stock stock) throws Exception {
-        if (stock == null) {
-            throw new Exception("STOCK_NOT_FOUND");
-        }
+    public Stock update(Stock stock) throws InvalidStockModelException, InvalidStockEntityException {
+        OutValidation.validateStockIsNull(stock);
 
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
 
