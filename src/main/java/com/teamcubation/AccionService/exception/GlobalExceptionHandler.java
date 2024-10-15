@@ -1,6 +1,7 @@
 package com.teamcubation.AccionService.exception;
 
 import com.teamcubation.AccionService.domain.exception.DuplicatedStockException;
+import com.teamcubation.AccionService.domain.exception.InvalidStockEntityException;
 import com.teamcubation.AccionService.domain.exception.InvalidStockModelException;
 import com.teamcubation.AccionService.domain.exception.StockNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidStockModelException.class)
     public ResponseEntity<?> handleInvalidStockModelException(InvalidStockModelException e, HttpServletRequest request) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(this.createErrorMessage(e, request, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(InvalidStockEntityException.class)
+    public ResponseEntity<?> handleInvalidStockEntityException(InvalidStockEntityException e, HttpServletRequest request) {
 
         return ResponseEntity
                 .badRequest()
