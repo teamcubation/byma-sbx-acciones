@@ -28,14 +28,14 @@ import java.util.List;
 @RequestMapping("/stock")
 public class StockControllerImpl implements StockController {
     private static final String GETTING_ALL_STOCKS = "Getting all stocks";
-    private static final String GETTING_STOCK_BY_ID = "Getting stock by id";
-    private static final String STOCK_FOUND_BY_ID = "Stock found by id";
-    private static final String CREATING_STOCK = "Creating stock";
-    private static final String CREATED_STOCK = "Stock was created";
-    private static final String DELETING_STOCK_BY_ID = "Deleting stock by id";
-    private static final String DELETED_STOCK = "Stock with id was deleted";
-    private static final String UPDATING_STOCK_BY_ID = "Updating stock by id";
-    private static final String UPDATED_STOCK = "Stock with id was updated";
+    private static final String GETTING_STOCK_BY_ID = "Getting stock by id {}";
+    private static final String STOCK_FOUND_BY_ID = "Stock found by id {}: {}";
+    private static final String CREATING_STOCK = "Creating stock {}: ";
+    private static final String CREATED_STOCK = "Stock was created: {}";
+    private static final String DELETING_STOCK_BY_ID = "Deleting stock by id {}";
+    private static final String DELETED_STOCK = "Stock with id was deleted: {}";
+    private static final String UPDATING_STOCK_BY_ID = "Updating stock by id {}";
+    private static final String UPDATED_STOCK = "Stock with id {} was updated: {}";
 
     private final StockInPort stockService;
 
@@ -81,7 +81,7 @@ public class StockControllerImpl implements StockController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable long id, @RequestBody UpdatedStockDTO updatedStockDTO) throws InvalidStockDTOException, DuplicatedStockException, StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
+    public ResponseEntity<?> update(@PathVariable long id, @Valid @RequestBody UpdatedStockDTO updatedStockDTO) throws InvalidStockDTOException, DuplicatedStockException, StockNotFoundException, InvalidStockModelException, InvalidStockEntityException {
         log.info(UPDATING_STOCK_BY_ID, id);
         StockResponseDTO stockUpdate = StockResponseMapper.toStockResponse(stockService.update(UpdatedStockMapper.toStockToUpdate(updatedStockDTO,id)));
         log.info(UPDATED_STOCK, id, stockUpdate.toString());
