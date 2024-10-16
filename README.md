@@ -66,6 +66,9 @@ financieros. Proporciona endpoints para crear, leer, actualizar y eliminar (CRUD
 
    Una vez que la aplicación esté corriendo, puedes acceder a los endpoints de la API en `http://localhost:8080/stock/`.
 
+7. **Documentación API**:
+  Puedes acceder a la documentación completa de los endpoints generada por Swagger en `http://localhost:8080/swagger-ui/index.html`.
+
 ### Opcional: Importar en Postman
 
 Para probar los endpoints de la API, puedes importar el archivo JSON de Postman, que contiene todos los endpoints preconfigurados. Este archivo se encuentra en el proyecto.
@@ -145,7 +148,7 @@ La API proporciona los siguientes endpoints para gestionar la información de st
 - **Ejemplo de request**:
     ```json
     {
-      "name": "Apple Inc.",
+      "name": "Apple",
       "price": 155.0
     }
     ```
@@ -153,12 +156,8 @@ La API proporciona los siguientes endpoints para gestionar la información de st
     ```json
     {
       "id": 1,
-      "name": "Apple Inc.",
+      "name": "Apple",
       "price": 155.0,
       "dividend": 1.5
     }
     ```
-
-### Importación de Endpoints en Postman
-
-Los endpoints también han sido exportados en un archivo JSON de Postman que se encuentra en el proyecto. Puedes importar este archivo en Postman para probar los endpoints directamente.
