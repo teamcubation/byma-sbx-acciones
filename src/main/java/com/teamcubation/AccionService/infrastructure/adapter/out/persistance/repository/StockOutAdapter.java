@@ -7,6 +7,7 @@ import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.ent
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.mapper.StockMapper;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.util.validation.OutValidation;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +31,9 @@ public class StockOutAdapter implements StockOutPort {
 
         StockEntity stockEntity = StockMapper.domainToEntity(stock);
 
-        return StockMapper.entityToDomain(this.stockRepository.save(stockEntity));
+        StockEntity newStockEntity = this.stockRepository.save(stockEntity);
+
+        return StockMapper.entityToDomain(newStockEntity);
     }
 
     @Override
@@ -57,7 +60,7 @@ public class StockOutAdapter implements StockOutPort {
     }
 
     @Override
-    public Stock update(Stock stock) throws InvalidStockModelException, InvalidStockEntityException {
+    public Stock update(@Valid Stock stock) throws InvalidStockModelException, InvalidStockEntityException {
         OutValidation.validateStockIsNull(stock);
 
         StockEntity stockEntity = StockMapper.domainToEntity(stock);

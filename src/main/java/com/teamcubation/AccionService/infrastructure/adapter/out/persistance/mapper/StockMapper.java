@@ -4,6 +4,7 @@ import com.teamcubation.AccionService.domain.exception.*;
 import com.teamcubation.AccionService.domain.model.Stock;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.entity.StockEntity;
 import com.teamcubation.AccionService.infrastructure.adapter.out.persistance.util.validation.OutValidation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -20,8 +21,9 @@ public class StockMapper {
                 .build();
     }
 
-    public static StockEntity domainToEntity(Stock stock) throws InvalidStockModelException {
+    public static StockEntity domainToEntity(@Valid Stock stock) throws InvalidStockModelException {
         OutValidation.validateStockIsNull(stock);
+
         return StockEntity.builder()
                 .id(stock.getId())
                 .name(stock.getName())
