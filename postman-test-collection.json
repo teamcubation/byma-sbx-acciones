@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "cb651534-f37f-4009-8ba1-dd2404adc865",
+		"_postman_id": "c26feffd-6aba-41e1-9c27-d568ea1770ae",
 		"name": "byma-sbx-acciones",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16068899"
+		"_exporter_id": "39071293"
 	},
 	"item": [
 		{
@@ -21,12 +21,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						""
@@ -50,12 +51,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						""
@@ -79,12 +81,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						""
@@ -108,12 +111,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						""
@@ -137,12 +141,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						""
@@ -157,12 +162,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/stock/",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						""
@@ -177,12 +183,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/stock/1",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/1",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						"1"
@@ -197,12 +204,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/stock/999",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/999",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						"999"
@@ -226,12 +234,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/2",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/2",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						"2"
@@ -255,12 +264,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/2",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/2",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						"2"
@@ -284,12 +294,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/stock/999",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/999",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						"999"
@@ -304,15 +315,16 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/stock/2",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/1",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -324,12 +336,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/stock/999",
-					"protocol": "http",
+					"raw": "https://stock-service-8pyw.onrender.com/stock/999",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"stock-service-8pyw",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"stock",
 						"999"
